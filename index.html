@@ -1,5 +1,78 @@
-<html>
-  <body>
-    Hello world
-  </body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔥 RECKLESS INTERFACE 🔥</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Main Tabs -->
+        <div class="main-tabs">
+            <button class="main-tab active" onclick="showMainTab('coins')">Coins</button>
+            <button class="main-tab" onclick="showMainTab('court')">Court</button>
+            <button class="main-tab" onclick="showMainTab('eafc')">EAFC</button>
+            <button class="main-tab" onclick="showMainTab('write')">Write This Down</button>
+        </div>
+
+        <!-- Coins Sub-tabs -->
+        <div id="coins-subtabs" class="sub-tabs">
+            <button class="sub-tab active" onclick="showSubTab('coins', 'kev')">Kev Coins</button>
+            <button class="sub-tab" onclick="showSubTab('coins', 'hate')">Hate Coins</button>
+        </div>
+
+        <!-- Court Sub-tabs -->
+        <div id="court-subtabs" class="sub-tabs" style="display: none;">
+            <button class="sub-tab active" onclick="showSubTab('court', 'docket')">Docket</button>
+            <button class="sub-tab" onclick="showSubTab('court', 'sentencing')">Sentencing</button>
+        </div>
+
+        <!-- EAFC Sub-tabs -->
+        <div id="eafc-subtabs" class="sub-tabs" style="display: none;">
+            <button class="sub-tab active" onclick="showSubTab('eafc', 'draft')">Draft</button>
+            <button class="sub-tab" onclick="showSubTab('eafc', 'table')">Table</button>
+        </div>
+
+        <!-- Content Area -->
+        <div class="content">
+            <!-- Coins Content -->
+            <div id="coins-content" class="tab-content active">
+                <div id="coins-kev" class="sub-tab-content active">
+                    <iframe src="kev-coins.html" width="100%" height="500" frameborder="0" style="border-radius: 15px; overflow: hidden;"></iframe>
+                </div>
+                <div id="coins-hate" class="sub-tab-content">
+                    <iframe src="hate-coins.html" width="100%" height="500" frameborder="0" style="border-radius: 15px; overflow: hidden;"></iframe>
+                </div>
+            </div>
+
+            <!-- Court Content -->
+            <div id="court-content" class="tab-content">
+                <div id="court-docket" class="sub-tab-content active">
+                    <iframe src="docket.html" width="100%" height="500" frameborder="0" style="border-radius: 15px; overflow: hidden;"></iframe>
+                </div>
+                <div id="court-sentencing" class="sub-tab-content">
+                    <iframe src="sentencing.html" width="100%" height="500" frameborder="0" style="border-radius: 15px; overflow: hidden;"></iframe>
+                </div>
+            </div>
+
+            <!-- EAFC Content -->
+            <div id="eafc-content" class="tab-content">
+                <div id="eafc-draft" class="sub-tab-content active">
+                    <iframe src="draft.html" width="100%" height="500" frameborder="0" style="border-radius: 15px; overflow: hidden;"></iframe>
+                </div>
+                <div id="eafc-table" class="sub-tab-content">
+                    <iframe src="table.html" width="100%" height="500" frameborder="0" style="border-radius: 15px; overflow: hidden;"></iframe>
+                </div>
+            </div>
+
+            <!-- Write This Down Content -->
+            <div id="write-content" class="tab-content">
+                <iframe src="write-this-down.html" width="100%" height="500" frameborder="0" style="border-radius: 15px; overflow: hidden;"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
 </html>
