@@ -1,452 +1,360 @@
-// Docket data structure - Easy to manage and edit!
-const docketData = [
-    {
-        id: 1,
-        caseNumber: "CASE-2024-001",
-        defendant: "Johnny \"The Reckless\" Smith",
-        charges: "Reckless driving, Excessive speed, Endangering public safety",
-        status: "AWAITING TRIAL",
-        date: "2024-01-15"
-    },
-    {
-        id: 2,
-        caseNumber: "CASE-2024-002", 
-        defendant: "Sarah \"Wild Card\" Johnson",
-        charges: "Disorderly conduct, Public disturbance, Resisting arrest",
-        status: "IN CUSTODY",
-        date: "2024-01-16"
-    },
-    {
-        id: 3,
-        caseNumber: "CASE-2024-003",
-        defendant: "Mike \"Mad Dog\" Wilson",
-        charges: "Assault, Battery, Destruction of property",
-        status: "BAIL SET",
-        date: "2024-01-17"
-    },
-    {
-        id: 4,
-        caseNumber: "CASE-2024-004",
-        defendant: "Lisa \"Lightning\" Brown",
-        charges: "Fraud, Identity theft, Money laundering",
-        status: "UNDER INVESTIGATION",
-        date: "2024-01-18"
-    },
-    {
-        id: 5,
-        caseNumber: "CASE-2024-005",
-        defendant: "Tony \"Tornado\" Davis",
-        charges: "Burglary, Theft, Breaking and entering",
-        status: "CONVICTED",
-        date: "2024-01-19"
-    },
-    {
-        id: 6,
-        caseNumber: "CASE-2024-006",
-        defendant: "Rita \"Rampage\" Martinez",
-        charges: "Drug possession, Drug trafficking, Conspiracy",
-        status: "PLEA BARGAIN",
-        date: "2024-01-20"
-    },
-    {
-        id: 7,
-        caseNumber: "CASE-2024-007",
-        defendant: "Carlos \"Chaos\" Rodriguez",
-        charges: "Armed robbery, Assault with deadly weapon, Evading arrest",
-        status: "FUGITIVE",
-        date: "2024-01-21"
-    },
-    {
-        id: 8,
-        caseNumber: "CASE-2024-008",
-        defendant: "Amanda \"Anarchy\" Taylor",
-        charges: "Vandalism, Trespassing, Disturbing the peace",
-        status: "COMMUNITY SERVICE",
-        date: "2024-01-22"
-    }
-];
+// Guest Submission System for Reckless Interface
+let submissionsData = [];
 
-// Betting data structure - Easy to manage and edit!
-// All users have 50 Kev Coins by default
-const bettingData = [
-    {
-        id: 1,
-        name: "Rere",
-        avatar: "R",
-        betDetails: "Manchester United to win vs Liverpool"
-    },
-    {
-        id: 2,
-        name: "Pav",
-        avatar: "P",
-        betDetails: "Liverpool to win vs Manchester United"
-    },
-    {
-        id: 3,
-        name: "Wajid",
-        avatar: "W",
-        betDetails: "Draw between Man Utd and Liverpool"
-    },
-    {
-        id: 4,
-        name: "Abs",
-        avatar: "A",
-        betDetails: "Over 2.5 goals in the match"
-    },
-    {
-        id: 5,
-        name: "Peter",
-        avatar: "P",
-        betDetails: "Both teams to score in first half"
-    },
-    {
-        id: 6,
-        name: "Lil Yoyo",
-        avatar: "L",
-        betDetails: "25 coins on this and 5 coins on that"
-    },
-    {
-        id: 7,
-        name: "WildWill",
-        avatar: "W",
-        betDetails: "Rashford to score anytime"
-    },
-    {
-        id: 8,
-        name: "TheGreatOne",
-        avatar: "T",
-        betDetails: "Exact score: 2-1 to Liverpool"
-    }
-];
+// Google Sheets Configuration
+const GOOGLE_SHEETS_CONFIG = {
+    // Replace with your actual Google Sheets API configuration
+    scriptUrl: 'https://script.google.com/macros/s/AKfycbygD65v4-ejO1uvdPqwRGk4kaR1_Nsv6FUjKFXNFJ5kIRLEbus0STyCgLxT3n4CAFoO/exec', // Replace with your Apps Script URL
+    sheetId: '1X9xQel2xBwdreSJYeFwSZ9dp3CZVEgkLKCa22deHKKk', // Replace with your Google Sheet ID
+    sheetName: 'Reckless Submissions' // Name of the sheet tab
+};
 
-// Statements data structure - Easy to manage and edit!
-const statementsData = [
-    {
-        id: 1,
-        speaker: "Rere",
-        quote: "I can beat anyone at FIFA with my eyes closed",
-        date: "2024-01-15"
-    },
-    {
-        id: 2,
-        speaker: "Pav",
-        quote: "Manchester United is the best team in the universe",
-        date: "2024-01-16"
-    },
-    {
-        id: 3,
-        speaker: "Wajid",
-        quote: "I once scored 10 goals in one match... in my dreams",
-        date: "2024-01-17"
-    },
-    {
-        id: 4,
-        speaker: "Abs",
-        quote: "I'm so good at betting, I can predict the weather",
-        date: "2024-01-18"
-    },
-    {
-        id: 5,
-        speaker: "Peter",
-        quote: "I have a PhD in being reckless",
-        date: "2024-01-19"
-    },
-    {
-        id: 6,
-        speaker: "Lil Yoyo",
-        quote: "I once won a coin flip 50 times in a row... allegedly",
-        date: "2024-01-20"
-    }
-];
-
-// Function to render a single statement entry
-function renderStatementEntry(statement) {
-    return `
-        <div class="statement-entry">
-            <div class="statement-speaker">💬 ${statement.speaker}</div>
-            <div class="statement-quote">"${statement.quote}"</div>
-            <div class="statement-date">📅 ${statement.date}</div>
-        </div>
-    `;
-}
-
-// Function to render all statement entries
-function renderAllStatements() {
-    const statementsList = document.getElementById('statements-list');
-    if (statementsList) {
-        statementsList.innerHTML = statementsData.map(statement => renderStatementEntry(statement)).join('');
+// Save submission to Google Sheets
+async function saveSubmissionToGoogleSheets(submission) {
+    try {
+        const response = await fetch(GOOGLE_SHEETS_CONFIG.scriptUrl, {
+            method: 'POST',
+            mode: 'no-cors', // Required for Google Apps Script
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                action: 'addSubmission',
+                data: {
+                    name: submission.name,
+                    message: submission.message,
+                    type: submission.type,
+                    date: submission.date
+                }
+            })
+        });
+        
+        console.log('Submission sent to Google Sheets');
+        return true;
+    } catch (error) {
+        console.error('Error saving to Google Sheets:', error);
+        // Fallback to localStorage if Google Sheets fails
+        saveSubmissionToLocalStorage(submission);
+        return false;
     }
 }
 
-// Function to add a new statement
-function addStatement(speaker, quote, date) {
-    const newStatement = {
-        id: statementsData.length + 1,
-        speaker: speaker,
-        quote: quote,
-        date: date
+// Fallback: Save to localStorage
+function saveSubmissionToLocalStorage(submission) {
+    try {
+        const stored = localStorage.getItem('recklessSubmissions');
+        const submissions = stored ? JSON.parse(stored) : [];
+        submissions.push(submission);
+        localStorage.setItem('recklessSubmissions', JSON.stringify(submissions));
+        console.log('Submission saved to localStorage as fallback');
+    } catch (error) {
+        console.error('Error saving to localStorage:', error);
+    }
+}
+
+// Load submissions from Google Sheets
+async function loadSubmissionsFromGoogleSheets() {
+    try {
+        const response = await fetch(`${GOOGLE_SHEETS_CONFIG.scriptUrl}?action=getSubmissions`, {
+            method: 'GET',
+            mode: 'cors'
+        });
+        
+        if (response.ok) {
+            const data = await response.json();
+            submissionsData = data.submissions || [];
+            console.log('Submissions loaded from Google Sheets:', submissionsData.length);
+            return true;
+        }
+    } catch (error) {
+        console.error('Error loading from Google Sheets:', error);
+    }
+    
+    // Fallback to localStorage
+    return loadSubmissionsFromLocalStorage();
+}
+
+// Fallback: Load from localStorage
+function loadSubmissionsFromLocalStorage() {
+    try {
+        const stored = localStorage.getItem('recklessSubmissions');
+        if (stored) {
+            submissionsData = JSON.parse(stored);
+            console.log('Submissions loaded from localStorage:', submissionsData.length);
+            return true;
+        }
+    } catch (error) {
+        console.error('Error loading from localStorage:', error);
+    }
+    submissionsData = [];
+    return false;
+}
+
+// Generate submission type display text and class
+function getSubmissionTypeInfo(type) {
+    const typeMap = {
+        'kev-coin': { text: '⚡ KEV COIN', class: 'kev-coin' },
+        'hate-coin': { text: '💀 HATE COIN', class: 'hate-coin' },
+        'court-case': { text: '⚖️ COURT CASE', class: 'court-case' },
+        'write-down': { text: '📝 WRITE THIS DOWN', class: 'write-down' }
     };
-    statementsData.push(newStatement);
-    renderAllStatements();
+    return typeMap[type] || { text: 'UNKNOWN', class: 'unknown' };
 }
 
-// Function to remove a statement by ID
-function removeStatement(statementId) {
-    const index = statementsData.findIndex(statement => statement.id === statementId);
-    if (index > -1) {
-        statementsData.splice(index, 1);
-        renderAllStatements();
-    }
-}
-
-// Function to update a statement
-function updateStatement(statementId, updates) {
-    const statement = statementsData.find(statement => statement.id === statementId);
-    if (statement) {
-        Object.assign(statement, updates);
-        renderAllStatements();
-    }
-}
-
-// Function to render a single docket entry
-function renderDocketEntry(entry) {
+// Render a single submission entry
+function renderSubmissionEntry(submission) {
+    const typeInfo = getSubmissionTypeInfo(submission.type);
+    const date = new Date(submission.date).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+    
     return `
-        <div class="docket-entry">
-            <div class="docket-case-number">📋 ${entry.caseNumber}</div>
-            <div class="docket-defendant">⚖️ ${entry.defendant}</div>
-            <div class="docket-charges">${entry.charges}</div>
-            <div class="docket-status">STATUS: ${entry.status}</div>
-            <div class="docket-date">📅 ${entry.date}</div>
-        </div>
-    `;
-}
-
-// Function to render all docket entries
-function renderAllDocketEntries() {
-    const docketEntries = document.getElementById('docket-entries');
-    if (docketEntries) {
-        docketEntries.innerHTML = docketData.map(entry => renderDocketEntry(entry)).join('');
-    }
-}
-
-// Function to add a new docket entry
-function addDocketEntry(caseNumber, defendant, charges, status, date) {
-    const newEntry = {
-        id: docketData.length + 1,
-        caseNumber: caseNumber,
-        defendant: defendant,
-        charges: charges,
-        status: status,
-        date: date
-    };
-    docketData.push(newEntry);
-    renderAllDocketEntries();
-}
-
-// Function to remove a docket entry by ID
-function removeDocketEntry(entryId) {
-    const index = docketData.findIndex(entry => entry.id === entryId);
-    if (index > -1) {
-        docketData.splice(index, 1);
-        renderAllDocketEntries();
-    }
-}
-
-// Function to update a docket entry
-function updateDocketEntry(entryId, updates) {
-    const entry = docketData.find(entry => entry.id === entryId);
-    if (entry) {
-        Object.assign(entry, updates);
-        renderAllDocketEntries();
-    }
-}
-
-// Function to render a single bet message
-function renderBetMessage(bet) {
-    return `
-        <div class="message">
-            <div class="message-avatar">${bet.avatar}</div>
-            <div class="message-content">
-                <div class="message-name">${bet.name}</div>
-                <div class="message-bubble">
-                    <div class="bet-details">${bet.betDetails}</div>
-                </div>
+        <div class="submission-entry" data-type="${submission.type}">
+            <div class="submission-header-info">
+                <div class="submission-name">${submission.name}</div>
+                <div class="submission-type ${typeInfo.class}">${typeInfo.text}</div>
             </div>
+            <div class="submission-message">"${submission.message}"</div>
+            <div class="submission-date">📅 ${date}</div>
         </div>
     `;
 }
 
-// Function to render all betting messages
-function renderAllBets() {
-    const chatMessages = document.getElementById('chat-messages');
-    if (chatMessages) {
-        chatMessages.innerHTML = bettingData.map(bet => renderBetMessage(bet)).join('');
+// Render all submissions
+function renderAllSubmissions() {
+    const submissionsList = document.getElementById('submissions-list');
+    if (submissionsList) {
+        submissionsList.innerHTML = submissionsData.map(submission => renderSubmissionEntry(submission)).join('');
     }
 }
 
-// Function to add a new bet (easy to use!)
-function addBet(name, avatar, betDetails) {
-    const newBet = {
-        id: bettingData.length + 1,
+// Add a new submission
+async function addSubmission(name, message, type) {
+    const newSubmission = {
+        id: submissionsData.length > 0 ? Math.max(...submissionsData.map(s => s.id)) + 1 : 1,
         name: name,
-        avatar: avatar,
-        betDetails: betDetails
+        message: message,
+        type: type,
+        date: new Date().toISOString(),
+        judgment: 'pending'
     };
-    bettingData.push(newBet);
-    renderAllBets();
-}
-
-// Function to remove a bet by ID
-function removeBet(betId) {
-    const index = bettingData.findIndex(bet => bet.id === betId);
-    if (index > -1) {
-        bettingData.splice(index, 1);
-        renderAllBets();
+    
+    // Try to save to Google Sheets first
+    const savedToSheets = await saveSubmissionToGoogleSheets(newSubmission);
+    
+    if (savedToSheets) {
+        // Add to local array for immediate display
+        submissionsData.unshift(newSubmission);
+        renderAllSubmissions();
+    } else {
+        // If Google Sheets fails, add to local array and show warning
+        submissionsData.unshift(newSubmission);
+        renderAllSubmissions();
+        showMessage('⚠️ Saved locally - Google Sheets unavailable', 'warning');
     }
 }
 
-// Function to update a bet
-function updateBet(betId, updates) {
-    const bet = bettingData.find(bet => bet.id === betId);
-    if (bet) {
-        Object.assign(bet, updates);
-        renderAllBets();
+// Handle form submission
+async function handleSubmission(event) {
+    event.preventDefault();
+    
+    const formData = new FormData(event.target);
+    const name = formData.get('name').trim();
+    const message = formData.get('message').trim();
+    const type = formData.get('type');
+    
+    // Validate form data
+    if (!name || !message || !type) {
+        showMessage('Please fill in all fields!', 'error');
+        return;
     }
+    
+    // Show loading message
+    showMessage('🚀 Sending to Reckless Court...', 'info');
+    
+    // Add the new submission
+    await addSubmission(name, message, type);
+    
+    // Reset form
+    event.target.reset();
+    
+    // Show success message
+    showMessage('Submission sent to the Reckless Court! 🔥', 'success');
 }
 
-// Tab switching functions
-function showMainTab(tabName) {
-    // Hide all main tab contents
-    const allContents = document.querySelectorAll('.tab-content');
-    allContents.forEach(content => content.classList.remove('active'));
+// Filter submissions by type
+function filterSubmissions(filterType) {
+    const submissionsList = document.getElementById('submissions-list');
+    if (!submissionsList) return;
+    
+    let filteredData = submissionsData;
+    if (filterType !== 'all') {
+        filteredData = submissionsData.filter(submission => submission.type === filterType);
+    }
+    
+    submissionsList.innerHTML = filteredData.map(submission => renderSubmissionEntry(submission)).join('');
+}
 
-    // Hide all sub-tab containers
-    const allSubTabs = document.querySelectorAll('.sub-tabs');
-    allSubTabs.forEach(subTabs => subTabs.style.display = 'none');
-
-    // Remove active class from all main tabs
-    const allMainTabs = document.querySelectorAll('.main-tab');
-    allMainTabs.forEach(tab => tab.classList.remove('active'));
-
-    // Show selected main tab content
-    document.getElementById(tabName + '-content').classList.add('active');
-
-    // Show corresponding sub-tabs
-    document.getElementById(tabName + '-subtabs').style.display = 'flex';
-
-    // Add active class to clicked main tab
+// Handle filter button clicks
+function handleFilterClick(event) {
+    const filterType = event.target.getAttribute('data-filter');
+    
+    // Update active button
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
     event.target.classList.add('active');
 
-    // Reset sub-tabs to first one
-    const subTabs = document.querySelectorAll(`#${tabName}-subtabs .sub-tab`);
-    subTabs.forEach((subTab, index) => {
-        subTab.classList.remove('active');
-        if (index === 0) {
-            subTab.classList.add('active');
-        }
-    });
-
-    // Show first sub-tab content
-    const subContents = document.querySelectorAll(`#${tabName}-content .sub-tab-content`);
-    subContents.forEach((subContent, index) => {
-        subContent.classList.remove('active');
-        if (index === 0) {
-            subContent.classList.add('active');
-        }
-    });
+    // Filter submissions
+    filterSubmissions(filterType);
 }
 
-function showSubTab(mainTab, subTab) {
-    // Hide all sub-tab contents for current main tab
-    const allSubContents = document.querySelectorAll(`#${mainTab}-content .sub-tab-content`);
-    allSubContents.forEach(content => content.classList.remove('active'));
-
-    // Remove active class from all sub-tabs for current main tab
-    const allSubTabs = document.querySelectorAll(`#${mainTab}-subtabs .sub-tab`);
-    allSubTabs.forEach(tab => tab.classList.remove('active'));
-
-    // Show selected sub-tab content
-    document.getElementById(`${mainTab}-${subTab}`).classList.add('active');
-
-    // Add active class to clicked sub-tab
-    event.target.classList.add('active');
+// Show success/error messages
+function showMessage(message, type) {
+    // Remove existing messages
+    const existingMessage = document.querySelector('.message-popup');
+    if (existingMessage) {
+        existingMessage.remove();
+    }
+    
+    // Create message element
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'message-popup';
+    messageDiv.textContent = message;
+    
+    // Style based on type
+    let backgroundColor, boxShadow;
+    
+    switch (type) {
+        case 'success':
+            backgroundColor = 'linear-gradient(145deg, #ff6b35, #ff0040)';
+            boxShadow = '0 0 30px rgba(255, 107, 53, 0.7)';
+            break;
+        case 'error':
+            backgroundColor = 'linear-gradient(145deg, #ff0040, #ff6b35)';
+            boxShadow = '0 0 30px rgba(255, 0, 64, 0.7)';
+            break;
+        case 'warning':
+            backgroundColor = 'linear-gradient(145deg, #ff6b35, #ffaa00)';
+            boxShadow = '0 0 30px rgba(255, 107, 53, 0.7)';
+            break;
+        case 'info':
+            backgroundColor = 'linear-gradient(145deg, #0066cc, #004499)';
+            boxShadow = '0 0 30px rgba(0, 102, 204, 0.7)';
+            break;
+        default:
+            backgroundColor = 'linear-gradient(145deg, #ff6b35, #ff0040)';
+            boxShadow = '0 0 30px rgba(255, 107, 53, 0.7)';
+    }
+    
+    messageDiv.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: ${backgroundColor};
+        color: white;
+        padding: 15px 25px;
+        border-radius: 10px;
+        font-family: 'Orbitron', monospace;
+        font-weight: 700;
+        text-shadow: 0 0 10px #ffffff;
+        box-shadow: ${boxShadow};
+        z-index: 1000;
+        animation: messageSlideIn 0.5s ease-out;
+    `;
+    
+    document.body.appendChild(messageDiv);
+    
+    // Remove after 4 seconds
+    setTimeout(() => {
+        messageDiv.style.animation = 'messageSlideOut 0.5s ease-out';
+        setTimeout(() => {
+            if (messageDiv.parentNode) {
+                messageDiv.parentNode.removeChild(messageDiv);
+            }
+        }, 500);
+    }, 4000);
 }
+
+// Add CSS for message animations
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes messageSlideIn {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes messageSlideOut {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(100%); opacity: 0; }
+    }
+`;
+document.head.appendChild(style);
 
 // Initialize everything when page loads
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize betting chat if on betting page
-    if (document.getElementById('chat-messages')) {
-        renderAllBets();
+document.addEventListener('DOMContentLoaded', async function() {
+    // Load submissions from Google Sheets (with localStorage fallback)
+    await loadSubmissionsFromGoogleSheets();
+    
+    // Render all submissions
+    renderAllSubmissions();
+    
+    // Set up form submission
+    const submissionForm = document.getElementById('guest-submission-form');
+    if (submissionForm) {
+        submissionForm.addEventListener('submit', handleSubmission);
     }
     
-    // Initialize docket if on docket page
-    if (document.getElementById('docket-entries')) {
-        renderAllDocketEntries();
-    }
+    // Set up filter buttons
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    filterButtons.forEach(button => {
+        button.addEventListener('click', handleFilterClick);
+    });
     
-    // Initialize statements if on statements page
-    if (document.getElementById('statements-list')) {
-        renderAllStatements();
-    }
+    console.log('Reckless Interface Guest Portal initialized! 🔥');
 });
 
-// ========================================
-// EASY DOCKET MANAGEMENT EXAMPLES:
-// ========================================
-
-// To add a new docket entry, use:
-// addDocketEntry("CASE-2024-009", "Defendant Name", "Charges here", "STATUS", "2024-01-23");
-
-// To remove a docket entry by ID:
-// removeDocketEntry(1);
-
-// To update a docket entry:
-// updateDocketEntry(1, { status: "CONVICTED", charges: "Updated charges" });
-
-// To add multiple docket entries at once:
-// const newEntries = [
-//     { caseNumber: "CASE-2024-010", defendant: "New Defendant 1", charges: "Charges 1", status: "AWAITING TRIAL", date: "2024-01-24" },
-//     { caseNumber: "CASE-2024-011", defendant: "New Defendant 2", charges: "Charges 2", status: "IN CUSTODY", date: "2024-01-25" }
-// ];
-// newEntries.forEach(entry => addDocketEntry(entry.caseNumber, entry.defendant, entry.charges, entry.status, entry.date));
-
-// ========================================
-// EASY BET MANAGEMENT EXAMPLES:
-// ========================================
-// All users have 50 Kev Coins by default!
-
-// To add a new bet, use:
-// addBet("PlayerName", "A", "Description of bet");
-
-// To remove a bet by ID:
-// removeBet(1);
-
-// To update a bet:
-// updateBet(1, { betDetails: "Updated bet description" });
-
-// To add multiple bets at once:
-// const newBets = [
-//     { name: "NewPlayer1", avatar: "N", betDetails: "New bet 1" },
-//     { name: "NewPlayer2", avatar: "P", betDetails: "New bet 2" }
-// ];
-// newBets.forEach(bet => addBet(bet.name, bet.avatar, bet.betDetails));
-
-// ========================================
-// EASY STATEMENTS MANAGEMENT EXAMPLES:
-// ========================================
-
-// To add a new statement, use:
-// addStatement("Speaker Name", "The ridiculous thing they said", "2024-01-23");
-
-// To remove a statement by ID:
-// removeStatement(1);
-
-// To update a statement:
-// updateStatement(1, { quote: "Updated ridiculous statement" });
-
-// To add multiple statements at once:
-// const newStatements = [
-//     { speaker: "Person1", quote: "Statement 1", date: "2024-01-24" },
-//     { speaker: "Person2", quote: "Statement 2", date: "2024-01-25" }
-// ];
-// newStatements.forEach(statement => addStatement(statement.speaker, statement.quote, statement.date));
+// Add some sample data for demonstration
+if (submissionsData.length === 0) {
+    const sampleSubmissions = [
+        {
+            id: 1,
+            name: "Rere",
+            message: "I can beat anyone at FIFA with my eyes closed",
+            type: "kev-coin",
+            date: new Date(Date.now() - 86400000).toISOString(), // 1 day ago
+            judgment: "pending"
+        },
+        {
+            id: 2,
+            name: "Pav",
+            message: "Manchester United is the best team in the universe",
+            type: "hate-coin",
+            date: new Date(Date.now() - 172800000).toISOString(), // 2 days ago
+            judgment: "pending"
+        },
+        {
+            id: 3,
+            name: "Wajid",
+            message: "I once scored 10 goals in one match... in my dreams",
+            type: "write-down",
+            date: new Date(Date.now() - 259200000).toISOString(), // 3 days ago
+            judgment: "pending"
+        },
+        {
+            id: 4,
+            name: "Abs",
+            message: "I'm so good at betting, I can predict the weather",
+            type: "court-case",
+            date: new Date(Date.now() - 345600000).toISOString(), // 4 days ago
+            judgment: "pending"
+        }
+    ];
+    
+    submissionsData = sampleSubmissions;
+    saveSubmissionsToStorage();
+    renderAllSubmissions();
+}

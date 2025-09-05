@@ -2,74 +2,83 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔥 RECKLESS INTERFACE 🔥</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🔥 RECKLESS INTERFACE - Guest Portal 🔥</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <!-- Main Tabs -->
-        <div class="main-tabs">
-            <button class="main-tab active" onclick="showMainTab('coins')">Coins</button>
-            <button class="main-tab" onclick="showMainTab('court')">Court</button>
-            <button class="main-tab" onclick="showMainTab('eafc')">EAFC</button>
-            <button class="main-tab" onclick="showMainTab('write')">Write This Down</button>
+        <!-- Header Section -->
+        <div class="header-section">
+            <h1>🔥 RECKLESS INTERFACE 🔥</h1>
+            <p class="subtitle">💀 GUEST SUBMISSION PORTAL 💀</p>
+            <p class="description">Submit your wildest entries for the Reckless Court!</p>
         </div>
 
-        <!-- Coins Sub-tabs -->
-        <div id="coins-subtabs" class="sub-tabs">
-            <button class="sub-tab active" onclick="showSubTab('coins', 'kev')">Kev Coins</button>
-            <button class="sub-tab" onclick="showSubTab('coins', 'hate')">Hate Coins</button>
+        <!-- Submission Form Section -->
+        <div class="submission-container">
+            <div class="submission-header">
+                <h2>📝 SUBMIT YOUR ENTRY</h2>
+                <p>🔥 Choose your submission type and let the chaos begin! 🔥</p>
+            </div>
+            
+            <form id="guest-submission-form" class="submission-form">
+                <div class="form-group">
+                    <label for="submitter-name">Your Name:</label>
+                    <input type="text" id="submitter-name" name="name" placeholder="Enter your name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="submission-type">Submission Type:</label>
+                    <select id="submission-type" name="type" required>
+                        <option value="">Select submission type</option>
+                        <option value="kev-coin">⚡ Kev Coin Entry</option>
+                        <option value="hate-coin">💀 Hate Coin Entry</option>
+                        <option value="court-case">⚖️ Court Case Entry</option>
+                        <option value="write-down">📝 Write This Down Entry</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="submission-message">Your Message:</label>
+                    <textarea id="submission-message" name="message" placeholder="Enter your submission message" required></textarea>
+                </div>
+                
+                <button type="submit" class="submit-btn">🚀 SUBMIT TO THE RECKLESS COURT 🚀</button>
+            </form>
         </div>
 
-        <!-- Court Sub-tabs -->
-        <div id="court-subtabs" class="sub-tabs" style="display: none;">
-            <button class="sub-tab active" onclick="showSubTab('court', 'docket')">Docket</button>
-            <button class="sub-tab" onclick="showSubTab('court', 'sentencing')">Sentencing</button>
+        <!-- Submission Status Section -->
+        <div class="status-section">
+            <div class="status-header">
+                <h2>🔥 SUBMISSION STATUS</h2>
+                <p>💀 Your entries are being processed by the Reckless Court 💀</p>
+            </div>
+            
+            <div class="status-info">
+                <div class="status-item">
+                    <span class="status-icon">⚡</span>
+                    <span class="status-text">Kev Coin entries are being reviewed</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-icon">💀</span>
+                    <span class="status-text">Hate Coin entries are being processed</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-icon">⚖️</span>
+                    <span class="status-text">Court cases are being filed</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-icon">📝</span>
+                    <span class="status-text">Write This Down entries are being recorded</span>
+                </div>
+            </div>
         </div>
 
-        <!-- EAFC Sub-tabs -->
-        <div id="eafc-subtabs" class="sub-tabs" style="display: none;">
-            <button class="sub-tab active" onclick="showSubTab('eafc', 'draft')">Draft</button>
-            <button class="sub-tab" onclick="showSubTab('eafc', 'table')">Table</button>
-        </div>
-
-        <!-- Content Area -->
-        <div class="content">
-            <!-- Coins Content -->
-            <div id="coins-content" class="tab-content active">
-                <div id="coins-kev" class="sub-tab-content active">
-                    <iframe src="kev-coins.html" width="100%" height="500" frameborder="0" style="border-radius: 15px; overflow: hidden;"></iframe>
-                </div>
-                <div id="coins-hate" class="sub-tab-content">
-                    <iframe src="hate-coins.html" width="100%" height="500" frameborder="0" style="border-radius: 15px; overflow: hidden;"></iframe>
-                </div>
-            </div>
-
-            <!-- Court Content -->
-            <div id="court-content" class="tab-content">
-                <div id="court-docket" class="sub-tab-content active">
-                    <iframe src="docket.html" width="100%" height="500" frameborder="0" style="border-radius: 15px; overflow: hidden;"></iframe>
-                </div>
-                <div id="court-sentencing" class="sub-tab-content">
-                    <iframe src="sentencing.html" width="100%" height="500" frameborder="0" style="border-radius: 15px; overflow: hidden;"></iframe>
-                </div>
-            </div>
-
-            <!-- EAFC Content -->
-            <div id="eafc-content" class="tab-content">
-                <div id="eafc-draft" class="sub-tab-content active">
-                    <iframe src="draft.html" width="100%" height="500" frameborder="0" style="border-radius: 15px; overflow: hidden;"></iframe>
-                </div>
-                <div id="eafc-table" class="sub-tab-content">
-                    <iframe src="table.html" width="100%" height="500" frameborder="0" style="border-radius: 15px; overflow: hidden;"></iframe>
-                </div>
-            </div>
-
-            <!-- Write This Down Content -->
-            <div id="write-content" class="tab-content">
-                <iframe src="write-this-down.html" width="100%" height="500" frameborder="0" style="border-radius: 15px; overflow: hidden;"></iframe>
-            </div>
+        <!-- Footer Section -->
+        <div class="footer-section">
+            <p>🔥 Powered by Reckless Energy 🔥</p>
+            <p>💀 Submit at your own risk 💀</p>
         </div>
     </div>
 
