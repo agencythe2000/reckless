@@ -2868,3 +2868,545 @@ body {
     font-weight: 700;
     text-shadow: 0 0 15px #ffffff;
 }
+
+/* Pending changes indicator */
+.pending-indicator {
+    color: #ffaa00;
+    font-weight: 700;
+    font-size: 12px;
+    text-shadow: 0 0 10px #ffaa00;
+    animation: pendingPulse 1.5s ease-in-out infinite;
+    margin-left: 10px;
+}
+
+@keyframes pendingPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
+
+/* Enhanced save button styling for pending changes */
+.bulk-action-btn {
+    transition: all 0.3s ease;
+}
+
+.bulk-action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
+}
+
+/* Sentence display styling */
+.sentence-display {
+    background: linear-gradient(145deg, #1a1a1a, #2a2a2a);
+    border: 2px solid #8b00ff;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 10px 0;
+    box-shadow: 0 0 20px rgba(139, 0, 255, 0.3);
+}
+
+.sentence-label {
+    color: #8b00ff;
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 8px;
+    text-shadow: 0 0 10px #8b00ff;
+}
+
+.sentence-text {
+    color: #ffffff;
+    font-style: italic;
+    font-size: 16px;
+    line-height: 1.4;
+    padding: 10px;
+    background: rgba(139, 0, 255, 0.1);
+    border-radius: 5px;
+    border-left: 4px solid #8b00ff;
+}
+
+/* Free button styling */
+.free-btn {
+    background: linear-gradient(145deg, #00ff88, #00cc66);
+    color: #000000;
+    font-weight: 700;
+    text-shadow: 0 0 5px #ffffff;
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+    border: 2px solid #00ff88;
+}
+
+.free-btn:hover {
+    background: linear-gradient(145deg, #00cc66, #00aa44);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 255, 136, 0.6);
+}
+
+/* Free notice styling */
+.free-notice {
+    text-align: center;
+    padding: 15px;
+    background: linear-gradient(145deg, #1a1a1a, #2a2a2a);
+    border: 2px solid #00ff88;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+}
+
+/* ===== RECKLESS PITCH STYLES ===== */
+
+/* Pitch Header */
+.pitch-header {
+    text-align: center;
+    padding: 40px 20px;
+    background: linear-gradient(145deg, #0a0a0a, #1a1a1a);
+    border-radius: 20px;
+    margin-bottom: 30px;
+    border: 2px solid #00ff88;
+    box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
+}
+
+.pitch-header h1 {
+    font-family: 'Orbitron', monospace;
+    font-size: 3.5rem;
+    font-weight: 900;
+    background: linear-gradient(45deg, #00ff88, #00cc66, #ff6b35, #ff0040);
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: recklessGradient 3s ease infinite;
+    text-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
+    margin-bottom: 20px;
+}
+
+.pitch-subtitle {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #00ff88;
+    text-shadow: 0 0 15px #00ff88;
+    margin-bottom: 10px;
+}
+
+.pitch-description {
+    font-size: 1.2rem;
+    color: #ffffff;
+    font-weight: 400;
+    opacity: 0.9;
+}
+
+/* Coming Soon Banner */
+.coming-soon-banner {
+    background: linear-gradient(145deg, #ff6b35, #ff0040);
+    border-radius: 20px;
+    padding: 40px;
+    margin-bottom: 40px;
+    text-align: center;
+    box-shadow: 0 0 40px rgba(255, 107, 53, 0.4);
+    border: 3px solid #ff6b35;
+}
+
+.banner-content h2 {
+    font-family: 'Orbitron', monospace;
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: #ffffff;
+    text-shadow: 0 0 20px #ffffff;
+    margin-bottom: 20px;
+}
+
+.banner-content p {
+    font-size: 1.3rem;
+    color: #ffffff;
+    font-weight: 600;
+    margin-bottom: 30px;
+}
+
+.construction-animation {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.construction-icon {
+    font-size: 3rem;
+    animation: constructionSpin 2s linear infinite;
+}
+
+.construction-text {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #ffffff;
+    text-shadow: 0 0 15px #ffffff;
+    animation: constructionPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes constructionSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes constructionPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.05); }
+}
+
+/* Features Section */
+.features-section {
+    margin-bottom: 40px;
+}
+
+.features-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.features-header h3 {
+    font-family: 'Orbitron', monospace;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #00ff88;
+    text-shadow: 0 0 15px #00ff88;
+    margin-bottom: 10px;
+}
+
+.features-header p {
+    font-size: 1.1rem;
+    color: #ffffff;
+    opacity: 0.9;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    margin-bottom: 30px;
+}
+
+.feature-card {
+    background: linear-gradient(145deg, #1a1a1a, #2a2a2a);
+    border-radius: 15px;
+    padding: 25px;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+.feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.05) 50%, transparent 70%);
+    animation: featureShine 3s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes featureShine {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+.draft-card {
+    border-color: #00ff88;
+    box-shadow: 0 0 25px rgba(0, 255, 136, 0.3);
+}
+
+.eafc-card {
+    border-color: #ff6b35;
+    box-shadow: 0 0 25px rgba(255, 107, 53, 0.3);
+}
+
+.league-card {
+    border-color: #8b00ff;
+    box-shadow: 0 0 25px rgba(139, 0, 255, 0.3);
+}
+
+.cup-card {
+    border-color: #ff0040;
+    box-shadow: 0 0 25px rgba(255, 0, 64, 0.3);
+}
+
+.feature-icon {
+    font-size: 3rem;
+    margin-bottom: 15px;
+}
+
+.feature-card h4 {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 15px;
+    text-shadow: 0 0 10px #ffffff;
+}
+
+.feature-description p {
+    color: #cccccc;
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+.feature-list {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+}
+
+.feature-list li {
+    color: #ffffff;
+    margin-bottom: 8px;
+    padding-left: 20px;
+    position: relative;
+    font-size: 0.95rem;
+}
+
+.feature-list li::before {
+    content: '⚽';
+    position: absolute;
+    left: 0;
+    color: #00ff88;
+}
+
+.feature-status {
+    margin-top: 20px;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.status-badge.planning {
+    background: linear-gradient(145deg, #ffaa00, #ff8800);
+    color: #000000;
+    box-shadow: 0 0 15px rgba(255, 170, 0, 0.5);
+}
+
+/* Progress Section */
+.progress-section {
+    margin-bottom: 40px;
+}
+
+.progress-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.progress-header h3 {
+    font-family: 'Orbitron', monospace;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #ff6b35;
+    text-shadow: 0 0 15px #ff6b35;
+    margin-bottom: 10px;
+}
+
+.progress-header p {
+    font-size: 1.1rem;
+    color: #ffffff;
+    opacity: 0.9;
+}
+
+.progress-timeline {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.progress-timeline::before {
+    content: '';
+    position: absolute;
+    left: 30px;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(to bottom, #00ff88, #ff6b35, #ff0040);
+    border-radius: 2px;
+}
+
+.timeline-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.timeline-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-right: 20px;
+    position: relative;
+    z-index: 2;
+}
+
+.timeline-item.completed .timeline-icon {
+    background: linear-gradient(145deg, #00ff88, #00cc66);
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+}
+
+.timeline-item.current .timeline-icon {
+    background: linear-gradient(145deg, #ff6b35, #ff8800);
+    box-shadow: 0 0 20px rgba(255, 107, 53, 0.5);
+    animation: currentPulse 2s ease-in-out infinite;
+}
+
+.timeline-item.upcoming .timeline-icon {
+    background: linear-gradient(145deg, #666666, #444444);
+    box-shadow: 0 0 15px rgba(102, 102, 102, 0.3);
+}
+
+@keyframes currentPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.timeline-content {
+    flex: 1;
+    background: linear-gradient(145deg, #1a1a1a, #2a2a2a);
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px solid #333333;
+}
+
+.timeline-content h4 {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 8px;
+}
+
+.timeline-content p {
+    color: #cccccc;
+    margin-bottom: 10px;
+    line-height: 1.4;
+}
+
+.timeline-date {
+    font-size: 0.9rem;
+    color: #00ff88;
+    font-weight: 600;
+}
+
+/* Newsletter Section */
+.newsletter-section {
+    background: linear-gradient(145deg, #0a0a0a, #1a1a1a);
+    border-radius: 20px;
+    padding: 40px;
+    text-align: center;
+    margin-bottom: 40px;
+    border: 2px solid #ff6b35;
+    box-shadow: 0 0 30px rgba(255, 107, 53, 0.3);
+}
+
+.newsletter-content h3 {
+    font-family: 'Orbitron', monospace;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #ff6b35;
+    text-shadow: 0 0 15px #ff6b35;
+    margin-bottom: 15px;
+}
+
+.newsletter-content p {
+    font-size: 1.1rem;
+    color: #ffffff;
+    margin-bottom: 25px;
+    opacity: 0.9;
+}
+
+.newsletter-form {
+    display: flex;
+    gap: 15px;
+    max-width: 500px;
+    margin: 0 auto 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.newsletter-input {
+    flex: 1;
+    min-width: 250px;
+    padding: 15px 20px;
+    border: 2px solid #ff6b35;
+    border-radius: 10px;
+    background: #1a1a1a;
+    color: #ffffff;
+    font-size: 1rem;
+    font-family: 'Rajdhani', sans-serif;
+}
+
+.newsletter-input::placeholder {
+    color: #888888;
+}
+
+.newsletter-input:focus {
+    outline: none;
+    box-shadow: 0 0 20px rgba(255, 107, 53, 0.5);
+}
+
+.newsletter-button {
+    padding: 15px 30px;
+    background: linear-gradient(145deg, #ff6b35, #ff8800);
+    color: #000000;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Orbitron', monospace;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+}
+
+.newsletter-button:hover {
+    background: linear-gradient(145deg, #ff8800, #ffaa00);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 136, 0, 0.4);
+}
+
+.newsletter-note {
+    font-size: 0.9rem;
+    color: #888888;
+    font-style: italic;
+}
+
+/* Pitch Card Styling */
+.pitch-card {
+    background: linear-gradient(145deg, #0a0a0a, #1a1a1a);
+    border: 3px solid #00ff88;
+    box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.pitch-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 30%, rgba(0, 255, 136, 0.1) 50%, transparent 70%);
+    animation: recklessShine 3s ease-in-out infinite;
+    pointer-events: none;
+}
+
+.pitch-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 255, 136, 0.4);
+}

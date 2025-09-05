@@ -16,6 +16,8 @@ function doPost(e) {
             return updateJudgments(data.data);
         } else if (data.action === 'updateJudgmentWithSentence') {
             return updateJudgmentWithSentence(data.data);
+        } else if (data.action === 'updateJudgmentToFree') {
+            return updateJudgmentToFree(data.data);
         }
         
         return ContentService
@@ -104,7 +106,8 @@ function getSubmissions() {
             message: row[2] || '',
             type: row[3] || '',
             date: row[4] || new Date().toISOString(),
-            judgment: row[5] || 'pending'
+            judgment: row[5] || 'pending',
+            sentence: row[6] || '' // Include sentence column
         }));
         
         return ContentService
@@ -200,6 +203,44 @@ function updateJudgmentWithSentence(updateData) {
                 entryId: entryId,
                 judgment: newJudgment,
                 sentence: sentence
+            }))
+            .setMimeType(ContentService.MimeType.JSON);
+            
+    } catch (error) {
+        return ContentService
+            .createTextOutput(JSON.stringify({ 
+                success: false, 
+                error: error.toString() 
+            }))
+            .setMimeType(ContentService.MimeType.JSON);
+    }
+}
+
+// Update judgment to 'free' for sentenced entries
+function updateJudgmentToFree(updateData) {
+    try {
+        const sheet = SpreadsheetApp.openById(SHEET_ID).getSheetByName(SHEET_NAME);
+        const data = sheet.getDataRange().getValues();
+        
+        const entryId = updateData.id;
+        
+        // Find the row with matching ID (column A)
+        for (let i = 1; i < data.length; i++) { // Skip header row
+            if (data[i][0] == entryId) {
+                // Update the judgment column (column F, index 5) to 'free'
+                sheet.getRange(i + 1, 6).setValue('free');
+                // Clear the sentence column (column G, index 6) since they're now free
+                sheet.getRange(i + 1, 7).setValue('');
+                break;
+            }
+        }
+        
+        return ContentService
+            .createTextOutput(JSON.stringify({ 
+                success: true, 
+                message: `Entry ${entryId} has been set free!`,
+                entryId: entryId,
+                judgment: 'free'
             }))
             .setMimeType(ContentService.MimeType.JSON);
             

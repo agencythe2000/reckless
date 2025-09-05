@@ -153,6 +153,52 @@ function updateEntryJudgment(entryId, newJudgment) {
     }
 }
 
+// Update entry to 'free' status (immediate save)
+async function updateEntryToFree(entryId) {
+    console.log('Setting entry free:', entryId);
+    
+    try {
+        const response = await fetch(GOOGLE_SHEETS_CONFIG.scriptUrl, {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                action: 'updateJudgmentToFree',
+                data: {
+                    id: parseInt(entryId)
+                }
+            })
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            if (result.success) {
+                console.log('✅ Entry set free successfully:', result);
+                
+                // Update local data
+                const entry = adminSubmissionsData.find(e => e.id == entryId);
+                if (entry) {
+                    entry.judgment = 'free';
+                    entry.sentence = ''; // Clear sentence when freed
+                }
+                
+                updateStats();
+                renderAllAdminEntries();
+                showMessage(`🆓 Entry #${entryId} has been set FREE!`, 'success');
+            } else {
+                throw new Error(result.error || 'Unknown error from server');
+            }
+        } else {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+    } catch (error) {
+        console.error('Error setting entry free:', error);
+        showMessage(`❌ Error setting entry free: ${error.message}`, 'error');
+    }
+}
+
 // Generate submission type display text and class
 function getSubmissionTypeInfo(type) {
     const typeMap = {
@@ -170,7 +216,8 @@ function getJudgmentInfo(judgment) {
         'pending': { text: '⏳ PENDING', class: 'pending', color: '#ffaa00' },
         'safe': { text: '✅ SAFE', class: 'safe', color: '#00ff00' },
         'reckless': { text: '🔥 RECKLESS', class: 'reckless', color: '#ff0040' },
-        'sentenced': { text: '⚖️ SENTENCED', class: 'sentenced', color: '#8b00ff' }
+        'sentenced': { text: '⚖️ SENTENCED', class: 'sentenced', color: '#8b00ff' },
+        'free': { text: '🆓 FREE', class: 'free', color: '#00ff88' }
     };
     return judgmentMap[judgment] || judgmentMap['pending'];
 }
@@ -210,9 +257,21 @@ function renderAdminEntry(entry) {
                     <span class="judgment-status ${judgmentInfo.class}" style="color: ${judgmentInfo.color}">
                         ${judgmentInfo.text}
                     </span>
+                    ${hasChanges ? '<span class="pending-indicator">⚠️ UNSAVED CHANGES</span>' : ''}
                 </div>
                 
-                ${entry.judgment !== 'sentenced' ? `
+                ${entry.judgment === 'sentenced' ? `
+                <div class="sentence-display">
+                    <div class="sentence-label">📜 Sentence:</div>
+                    <div class="sentence-text">"${entry.sentence || 'No sentence recorded'}"</div>
+                </div>
+                <div class="judgment-buttons">
+                    <button class="judgment-btn free-btn" 
+                            onclick="updateEntryToFree(${entry.id})">
+                        🆓 SET FREE
+                    </button>
+                </div>
+                ` : entry.judgment !== 'free' ? `
                 <div class="judgment-buttons">
                     <button class="judgment-btn safe-btn ${entry.judgment === 'safe' ? 'active' : ''}" 
                             onclick="updateEntryJudgment(${entry.id}, 'safe')">
@@ -224,8 +283,8 @@ function renderAdminEntry(entry) {
                     </button>
                 </div>
                 ` : `
-                <div class="sentenced-notice">
-                    <span style="color: #8b00ff; font-weight: 700; font-style: italic;">⚖️ SENTENCED - NO CHANGES ALLOWED</span>
+                <div class="free-notice">
+                    <span style="color: #00ff88; font-weight: 700; font-style: italic;">🆓 FREE - NO FURTHER ACTION NEEDED</span>
                 </div>
                 `}
             </div>
@@ -252,6 +311,8 @@ function filterAdminEntries(filterType) {
         filteredData = adminSubmissionsData.filter(entry => entry.judgment === 'pending');
     } else if (filterType === 'sentenced') {
         filteredData = adminSubmissionsData.filter(entry => entry.judgment === 'sentenced');
+    } else if (filterType === 'free') {
+        filteredData = adminSubmissionsData.filter(entry => entry.judgment === 'free');
     } else if (filterType !== 'all') {
         filteredData = adminSubmissionsData.filter(entry => entry.type === filterType);
     }
@@ -280,6 +341,7 @@ function updateStats() {
     const safeEntries = adminSubmissionsData.filter(e => e.judgment === 'safe').length;
     const recklessEntries = adminSubmissionsData.filter(e => e.judgment === 'reckless').length;
     const sentencedEntries = adminSubmissionsData.filter(e => e.judgment === 'sentenced').length;
+    const freeEntries = adminSubmissionsData.filter(e => e.judgment === 'free').length;
     
     document.getElementById('total-entries').textContent = totalEntries;
     document.getElementById('pending-entries').textContent = pendingEntries;
@@ -290,6 +352,27 @@ function updateStats() {
     const sentencedElement = document.getElementById('sentenced-entries');
     if (sentencedElement) {
         sentencedElement.textContent = sentencedEntries;
+    }
+    
+    // Add free entries to stats if the element exists
+    const freeElement = document.getElementById('free-entries');
+    if (freeElement) {
+        freeElement.textContent = freeEntries;
+    }
+    
+    // Update save button with pending changes count
+    const saveButton = document.getElementById('save-changes');
+    if (saveButton) {
+        const pendingChangesCount = pendingChanges.size;
+        if (pendingChangesCount > 0) {
+            saveButton.textContent = `💾 SAVE ALL CHANGES (${pendingChangesCount})`;
+            saveButton.style.backgroundColor = '#ff6b35';
+            saveButton.style.boxShadow = '0 0 20px rgba(255, 107, 53, 0.7)';
+        } else {
+            saveButton.textContent = '💾 SAVE ALL CHANGES';
+            saveButton.style.backgroundColor = '';
+            saveButton.style.boxShadow = '';
+        }
     }
 }
 

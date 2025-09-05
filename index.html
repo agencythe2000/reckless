@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>🔥 RECKLESS COURT PORTAL 🔥</title>
+    <title>🔥 RECKLESS PORTAL 🔥</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
@@ -12,7 +12,7 @@
         <div class="content">
             <!-- Main Header Section -->
             <div class="main-header">
-                <h1>⚖️ RECKLESS COURT ⚖️</h1>
+                <h1>⚖️ RECKLESS ARENA ⚖️</h1>
                 <p class="main-subtitle">🔥 Welcome to the Most Reckless Portal in the Universe 🔥</p>
                 <p class="main-description">Choose your path in the Reckless Court System</p>
             </div>
@@ -84,6 +84,28 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Pitch Card -->
+                <div class="nav-card pitch-card" onclick="navigateToPitch()">
+                    <div class="card-header">
+                        <div class="card-icon">⚽</div>
+                        <h2>RECKLESS PITCH</h2>
+                    </div>
+                    <div class="card-content">
+                        <p class="card-description">Football management system with player drafts and EAFC tracking</p>
+                        <div class="card-features">
+                            <div class="feature-item">🎯 Player Draft System</div>
+                            <div class="feature-item">🎮 EAFC Games Tracking</div>
+                            <div class="feature-item">🏆 League Format</div>
+                            <div class="feature-item">🗺️ Cup Final Map</div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-button">
+                            <span>⚽ ENTER PITCH ⚽</span>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Court Status Section -->
@@ -104,6 +126,10 @@
                     <div class="status-item">
                         <span class="status-icon">💾</span>
                         <span class="status-text">Google Sheets: CONNECTED</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-icon">⚽</span>
+                        <span class="status-text">Reckless Pitch: COMING SOON</span>
                     </div>
                     <div class="status-item">
                         <span class="status-icon">🔥</span>
@@ -132,6 +158,10 @@
 
         function navigateToCourt() {
             window.location.href = 'reckless-court.html';
+        }
+
+        function navigateToPitch() {
+            window.location.href = 'reckless-pitch.html';
         }
 
         // Add some interactive effects
