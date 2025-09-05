@@ -1,13 +1,8 @@
 // Guest Submission System for Reckless Interface
 let submissionsData = [];
 
-// Google Sheets Configuration
-const GOOGLE_SHEETS_CONFIG = {
-    // Replace with your actual Google Sheets API configuration
-    scriptUrl: 'https://script.google.com/macros/s/AKfycbygD65v4-ejO1uvdPqwRGk4kaR1_Nsv6FUjKFXNFJ5kIRLEbus0STyCgLxT3n4CAFoO/exec', // Replace with your Apps Script URL
-    sheetId: '1X9xQel2xBwdreSJYeFwSZ9dp3CZVEgkLKCa22deHKKk', // Replace with your Google Sheet ID
-    sheetName: 'Reckless Submissions' // Name of the sheet tab
-};
+// Use centralized configuration
+const GOOGLE_SHEETS_CONFIG = window.RECKLESS_CONFIG.googleSheets;
 
 // Save submission to Google Sheets
 async function saveSubmissionToGoogleSheets(submission) {
@@ -351,6 +346,22 @@ if (submissionsData.length === 0) {
             type: "court-case",
             date: new Date(Date.now() - 345600000).toISOString(), // 4 days ago
             judgment: "pending"
+        },
+        {
+            id: 5,
+            name: "Court Judge",
+            message: "This case has been officially sentenced by the Reckless Court",
+            type: "court-case",
+            date: new Date(Date.now() - 432000000).toISOString(), // 5 days ago
+            judgment: "sentenced"
+        },
+        {
+            id: 6,
+            name: "Final Verdict",
+            message: "The Reckless Court has reached its final decision",
+            type: "hate-coin",
+            date: new Date(Date.now() - 518400000).toISOString(), // 6 days ago
+            judgment: "sentenced"
         }
     ];
     

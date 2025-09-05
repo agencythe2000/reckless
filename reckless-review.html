@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🔥 RECKLESS ADMIN PORTAL 🔥</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <!-- Header Section -->
+            <div class="admin-header">
+                <h1>⚖️ RECKLESS REVIEW ⚖️</h1>
+                <p>🔥 Review and Judge Submissions 🔥</p>
+            </div>
+
+            <!-- Filter Section -->
+            <div class="admin-filter-section">
+                <div class="filter-header">
+                    <h3>🔍 FILTER SUBMISSIONS</h3>
+                    <p>💀 Choose which entries to review 💀</p>
+                </div>
+                
+                <div class="admin-filter-buttons">
+                    <button class="admin-filter-btn active" data-filter="all">ALL ENTRIES</button>
+                    <button class="admin-filter-btn" data-filter="kev-coin">⚡ KEV COINS</button>
+                    <button class="admin-filter-btn" data-filter="hate-coin">💀 HATE COINS</button>
+                    <button class="admin-filter-btn" data-filter="court-case">⚖️ COURT CASES</button>
+                    <button class="admin-filter-btn" data-filter="write-down">📝 WRITE THIS DOWN</button>
+                    <button class="admin-filter-btn" data-filter="pending">⏳ PENDING ONLY</button>
+                    <button class="admin-filter-btn" data-filter="sentenced">⚖️ SENTENCED</button>
+                </div>
+            </div>
+
+            <!-- Stats Section -->
+            <div class="admin-stats">
+                <div class="stat-item">
+                    <span class="stat-number" id="total-entries">0</span>
+                    <span class="stat-label">TOTAL ENTRIES</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="pending-entries">0</span>
+                    <span class="stat-label">PENDING JUDGMENT</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="safe-entries">0</span>
+                    <span class="stat-label">SAFE ENTRIES</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="reckless-entries">0</span>
+                    <span class="stat-label">RECKLESS ENTRIES</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="sentenced-entries">0</span>
+                    <span class="stat-label">SENTENCED ENTRIES</span>
+                </div>
+            </div>
+
+            <!-- Entries Display Section -->
+            <div class="admin-entries-section">
+                <div class="entries-header">
+                    <h3>📋 SUBMISSION REVIEW</h3>
+                    <p>⚖️ Judge each entry as Safe or Reckless ⚖️</p>
+                </div>
+                
+                <div class="admin-entries-list" id="admin-entries-list">
+                    <!-- Entries will be dynamically generated here -->
+                </div>
+            </div>
+
+            <!-- Bulk Actions Section -->
+            <div class="bulk-actions-section">
+                <div class="bulk-actions-header">
+                    <h3>🚀 BULK ACTIONS</h3>
+                    <p>💀 Mass judgment operations 💀</p>
+                </div>
+                
+                <div class="bulk-actions-buttons">
+                    <button class="bulk-action-btn" id="mark-all-safe">✅ MARK ALL SAFE</button>
+                    <button class="bulk-action-btn" id="mark-all-reckless">🔥 MARK ALL RECKLESS</button>
+                    <button class="bulk-action-btn" id="save-changes">💾 SAVE ALL CHANGES</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="loading-spinner"></div>
+        <p>Loading submissions...</p>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="admin-script.js"></script>
+</body>
+</html>

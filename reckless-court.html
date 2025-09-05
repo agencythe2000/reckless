@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>⚖️ RECKLESS COURT ⚖️</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <!-- Court Header Section -->
+            <div class="court-header">
+                <h1>⚖️ RECKLESS COURT ⚖️</h1>
+                <p class="court-subtitle">🔥 Final Judgment for Reckless Entries 🔥</p>
+                <p class="court-description">Spin the wheel of fate to determine the ultimate sentence</p>
+            </div>
+
+            <!-- Filter Section -->
+            <div class="court-filter-section">
+                <div class="filter-header">
+                    <h3>🔍 FILTER RECKLESS ENTRIES</h3>
+                    <p>💀 Choose which reckless entries to judge 💀</p>
+                </div>
+                
+                <div class="court-filter-buttons">
+                    <button class="court-filter-btn active" data-filter="all">ALL RECKLESS</button>
+                    <button class="court-filter-btn" data-filter="kev-coin">⚡ KEV COINS</button>
+                    <button class="court-filter-btn" data-filter="hate-coin">💀 HATE COINS</button>
+                    <button class="court-filter-btn" data-filter="court-case">⚖️ COURT CASES</button>
+                    <button class="court-filter-btn" data-filter="write-down">📝 WRITE THIS DOWN</button>
+                </div>
+            </div>
+
+            <!-- Court Stats -->
+            <div class="court-stats">
+                <div class="stat-item">
+                    <span class="stat-number" id="total-reckless">0</span>
+                    <span class="stat-label">RECKLESS ENTRIES</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="awaiting-sentence">0</span>
+                    <span class="stat-label">AWAITING SENTENCE</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="sentenced-today">0</span>
+                    <span class="stat-label">SENTENCED TODAY</span>
+                </div>
+            </div>
+
+            <!-- Main Court Section -->
+            <div class="court-main-section">
+                <!-- Reckless Entries List -->
+                <div class="reckless-entries-section">
+                    <div class="entries-header">
+                        <h3>📋 RECKLESS ENTRIES AWAITING SENTENCE</h3>
+                        <p>⚖️ Select an entry to bring before the court ⚖️</p>
+                    </div>
+                    
+                    <div class="reckless-entries-list" id="reckless-entries-list">
+                        <!-- Entries will be dynamically generated here -->
+                    </div>
+                </div>
+
+                <!-- Court Wheel Section -->
+                <div class="court-wheel-section">
+                    <div class="wheel-header">
+                        <h3>🎰 WHEEL OF RECKLESS FATE 🎰</h3>
+                        <p>🔥 Spin to determine the ultimate sentence 🔥</p>
+                    </div>
+                    
+                    <div class="wheel-container">
+                        <div class="wheel" id="sentence-wheel">
+                            <div class="wheel-center">
+                                <div class="wheel-pointer"></div>
+                            </div>
+                            <div class="wheel-sections" id="wheel-sections">
+                                <!-- Wheel sections will be dynamically generated -->
+                            </div>
+                        </div>
+                        
+                        <div class="wheel-controls">
+                            <button class="spin-btn" id="spin-wheel" disabled>
+                                <span class="spin-text">🎰 SPIN THE WHEEL 🎰</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Current Case Section -->
+            <div class="current-case-section" id="current-case-section" style="display: none;">
+                <div class="case-header">
+                    <h3>⚖️ CURRENT CASE</h3>
+                    <p>💀 The case being judged 💀</p>
+                </div>
+                
+                <div class="current-case-info" id="current-case-info">
+                    <!-- Current case details will be shown here -->
+                </div>
+                
+                <div class="sentence-input-section">
+                    <div class="sentence-input-header">
+                        <h4>📝 ENTER SENTENCE</h4>
+                        <p>💀 Add the punishment text for this case 💀</p>
+                    </div>
+                    
+                    <div class="sentence-input-container">
+                        <textarea id="sentence-text" placeholder="Enter the punishment sentence here..." rows="3"></textarea>
+                        <div class="sentence-buttons">
+                            <button class="sentence-btn safe-sentence" id="mark-safe">
+                                ✅ MARK AS SAFE
+                            </button>
+                            <button class="sentence-btn sentenced-sentence" id="mark-sentenced">
+                                ⚖️ MARK AS SENTENCED
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sentence Management Section -->
+            <div class="sentence-management-section">
+                <div class="management-header">
+                    <h3>📋 WHEEL SENTENCES</h3>
+                    <p>💀 Manage the wheel of fate sentences 💀</p>
+                </div>
+                
+                <div class="sentence-input-area">
+                    <div class="input-header">
+                        <h4>🎰 WHEEL ENTRIES</h4>
+                        <p>Enter each sentence on a new line. These will be used for the spinning wheel.</p>
+                    </div>
+                    
+                    <div class="sentence-textarea-container">
+                        <textarea id="wheel-sentences-textarea" placeholder="Enter your wheel sentences here, one per line...&#10;&#10;Example:&#10;Community Service: Clean the Reckless Court for 100 hours&#10;Fine: Pay 1000 Reckless Coins to the Court&#10;Probation: Must submit 10 Kev Coins before next judgment&#10;Reckless Education: Write a 500-word essay on being less reckless&#10;Court Jester: Perform a comedy routine for the Reckless Court&#10;Digital Exile: Banned from submitting for 30 days&#10;Reckless Rehabilitation: Submit 5 Hate Coins as penance&#10;Court Guardian: Monitor new submissions for 1 week&#10;Reckless Reflection: Write a letter of apology to the Court&#10;Community Outreach: Help 3 other users with their submissions&#10;&#10;Each line will become a separate wheel section.&#10;Empty lines will be ignored."></textarea>
+                    </div>
+                    
+                    <div class="sentence-controls">
+                        <button class="update-sentences-btn" id="update-sentences">
+                            <span>🔄 UPDATE WHEEL</span>
+                        </button>
+                        <button class="clear-sentences-btn" id="clear-sentences">
+                            <span>🗑️ CLEAR ALL</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="loading-spinner"></div>
+        <p>Loading reckless entries...</p>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="court-script.js"></script>
+</body>
+</html>

@@ -1,6 +1,40 @@
 # Google Sheets Integration Setup Guide
 
-This guide will help you set up Google Sheets integration for the Reckless Submission Portal.
+This guide will help you set up Google Sheets integration for the Reckless Court System.
+
+## System Overview
+
+The Reckless Court System consists of three main portals:
+
+1. **Reckless Submissions** (`reckless-submissions.html` + `submission-script.js`) - Guest submission portal
+2. **Reckless Review** (`reckless-review.html` + `admin-script.js`) - Admin review portal  
+3. **Reckless Court** (`reckless-court.html` + `court-script.js`) - Final sentencing portal
+
+All portals share the same Google Sheets backend via the `google-apps-script.js` deployment.
+
+## File Structure
+
+```
+├── index.html                    # Main portal navigation
+├── reckless-submissions.html     # Guest submission portal
+├── reckless-review.html          # Admin review portal
+├── reckless-court.html           # Court sentencing portal
+├── config.js                     # Centralized configuration
+├── submission-script.js           # Guest submission functionality
+├── admin-script.js               # Admin review functionality
+├── court-script.js               # Court sentencing functionality
+├── google-apps-script.js         # Google Apps Script (deploy separately)
+├── styles.css                    # Shared styling
+└── GOOGLE_SHEETS_SETUP.md        # This documentation
+```
+
+### JavaScript Files Explained
+
+- **`config.js`**: Centralized configuration file containing Google Sheets settings and system configuration
+- **`submission-script.js`**: Handles guest submissions, form validation, and Google Sheets integration for the submission portal
+- **`admin-script.js`**: Manages admin review functionality, judgment updates, filtering, and bulk operations
+- **`court-script.js`**: Controls the spinning wheel, sentence management, and final sentencing operations
+- **`google-apps-script.js`**: Server-side Google Apps Script code that interfaces with Google Sheets (deploy this separately)
 
 ## Step 1: Create a Google Sheet
 
@@ -31,23 +65,37 @@ This guide will help you set up Google Sheets integration for the Reckless Submi
 
 ## Step 4: Update Your Website
 
-1. Open `script.js` in your website
-2. Find the `GOOGLE_SHEETS_CONFIG` section
-3. Replace `YOUR_SCRIPT_ID` with the actual Script ID from your Web App URL
-4. Replace `YOUR_SHEET_ID` with your actual Sheet ID
+**🎉 SIMPLIFIED!** You only need to update **one configuration file**:
+
+### Update Centralized Configuration (`config.js`)
+1. Open `config.js`
+2. Find the `googleSheets` section
+3. Replace `scriptUrl` with your actual Google Apps Script URL
+4. Replace `sheetId` with your actual Google Sheet ID
+5. Replace `sheetName` with your desired sheet tab name (optional)
+
+That's it! All three portals will automatically use these settings.
 
 ## Step 5: Test the Integration
 
-1. Open your website
-2. Submit a test entry
-3. Check your Google Sheet to see if the data appears
-4. The sheet should have columns: ID, Name, Message, Type, Date, Judgment
+1. Open `index.html` (main portal)
+2. Navigate to "Reckless Submissions" and submit a test entry
+3. Navigate to "Reckless Review" and test judgment updates
+4. Navigate to "Reckless Court" and test the spinning wheel
+5. Check your Google Sheet to see if the data appears
+6. The sheet should have columns: ID, Name, Message, Type, Date, Judgment, Sentence
 
 ### Judgment Field
 
 - All new submissions automatically get a judgment status of "pending"
 - This field can be manually updated in Google Sheets to track the status of each submission
-- Possible judgment values could include: "pending", "approved", "rejected", "under review", etc.
+- Possible judgment values include: "pending", "safe", "reckless", "sentenced"
+
+### Sentence Field
+
+- Added automatically when entries are sentenced in the Reckless Court
+- Contains the punishment text assigned to sentenced entries
+- Only populated for entries with judgment status "sentenced"
 
 ## Troubleshooting
 

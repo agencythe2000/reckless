@@ -12,6 +12,10 @@ function doPost(e) {
         
         if (data.action === 'addSubmission') {
             return addSubmission(data.data);
+        } else if (data.action === 'updateJudgments') {
+            return updateJudgments(data.data);
+        } else if (data.action === 'updateJudgmentWithSentence') {
+            return updateJudgmentWithSentence(data.data);
         }
         
         return ContentService
@@ -107,6 +111,95 @@ function getSubmissions() {
             .createTextOutput(JSON.stringify({ 
                 success: true, 
                 submissions: submissions 
+            }))
+            .setMimeType(ContentService.MimeType.JSON);
+            
+    } catch (error) {
+        return ContentService
+            .createTextOutput(JSON.stringify({ 
+                success: false, 
+                error: error.toString() 
+            }))
+            .setMimeType(ContentService.MimeType.JSON);
+    }
+}
+
+// Update judgments for multiple entries
+function updateJudgments(judgmentUpdates) {
+    try {
+        const sheet = SpreadsheetApp.openById(SHEET_ID).getSheetByName(SHEET_NAME);
+        const data = sheet.getDataRange().getValues();
+        
+        let updatedCount = 0;
+        
+        // Process each judgment update
+        judgmentUpdates.forEach(update => {
+            const entryId = update.id;
+            const newJudgment = update.judgment;
+            
+            // Find the row with matching ID (column A)
+            for (let i = 1; i < data.length; i++) { // Skip header row
+                if (data[i][0] == entryId) {
+                    // Update the judgment column (column F, index 5)
+                    sheet.getRange(i + 1, 6).setValue(newJudgment);
+                    updatedCount++;
+                    break;
+                }
+            }
+        });
+        
+        return ContentService
+            .createTextOutput(JSON.stringify({ 
+                success: true, 
+                message: `Updated ${updatedCount} judgments successfully`,
+                updatedCount: updatedCount
+            }))
+            .setMimeType(ContentService.MimeType.JSON);
+            
+    } catch (error) {
+        return ContentService
+            .createTextOutput(JSON.stringify({ 
+                success: false, 
+                error: error.toString() 
+            }))
+            .setMimeType(ContentService.MimeType.JSON);
+    }
+}
+
+// Update judgment with sentence for a single entry
+function updateJudgmentWithSentence(updateData) {
+    try {
+        const sheet = SpreadsheetApp.openById(SHEET_ID).getSheetByName(SHEET_NAME);
+        const data = sheet.getDataRange().getValues();
+        
+        const entryId = updateData.id;
+        const newJudgment = updateData.judgment;
+        const sentence = updateData.sentence;
+        
+        // Check if we need to add a sentence column
+        if (data.length > 0 && data[0].length < 7) {
+            // Add sentence column header
+            sheet.getRange(1, 7).setValue('Sentence');
+        }
+        
+        // Find the row with matching ID (column A)
+        for (let i = 1; i < data.length; i++) { // Skip header row
+            if (data[i][0] == entryId) {
+                // Update the judgment column (column F, index 5)
+                sheet.getRange(i + 1, 6).setValue(newJudgment);
+                // Update the sentence column (column G, index 6)
+                sheet.getRange(i + 1, 7).setValue(sentence);
+                break;
+            }
+        }
+        
+        return ContentService
+            .createTextOutput(JSON.stringify({ 
+                success: true, 
+                message: `Updated judgment and sentence for entry ${entryId}`,
+                entryId: entryId,
+                judgment: newJudgment,
+                sentence: sentence
             }))
             .setMimeType(ContentService.MimeType.JSON);
             
