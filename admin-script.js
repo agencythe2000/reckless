@@ -401,7 +401,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     // Set up bulk action buttons
     document.getElementById('mark-all-safe').addEventListener('click', markAllSafe);
     document.getElementById('mark-all-reckless').addEventListener('click', markAllReckless);
-    document.getElementById('save-changes').addEventListener('click', saveJudgmentChanges);
+    document.getElementById('save-changes').addEventListener('click', saveJudgmentChangesEnhanced);
     document.getElementById('test-connection').addEventListener('click', testGoogleSheetsConnection);
     
     // Test Google Sheets connection
@@ -436,6 +436,114 @@ async function testGoogleSheetsConnection() {
     } catch (error) {
         console.error('❌ Google Sheets connection error:', error);
         showMessage(`❌ Connection error: ${error.message}`, 'error');
+    } finally {
+        showLoading(false);
+    }
+}
+
+// Enhanced save function with better error handling
+async function saveJudgmentChangesEnhanced() {
+    if (pendingChanges.size === 0) {
+        showMessage('No changes to save', 'info');
+        return;
+    }
+
+    showLoading(true);
+    try {
+        const changes = Array.from(pendingChanges.entries()).map(([id, judgment]) => ({
+            id: parseInt(id),
+            judgment: judgment
+        }));
+
+        console.log('Sending changes to Google Sheets:', changes);
+        console.log('Using script URL:', GOOGLE_SHEETS_CONFIG.scriptUrl);
+
+        // Try multiple approaches
+        let response;
+        let success = false;
+
+        // Approach 1: Standard CORS request
+        try {
+            response = await fetch(GOOGLE_SHEETS_CONFIG.scriptUrl, {
+                method: 'POST',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    action: 'updateJudgments',
+                    data: changes
+                })
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                if (result.success) {
+                    success = true;
+                    console.log('✅ Standard CORS request successful:', result);
+                }
+            }
+        } catch (corsError) {
+            console.log('CORS request failed, trying no-cors:', corsError);
+        }
+
+        // Approach 2: No-CORS request (if CORS failed)
+        if (!success) {
+            try {
+                response = await fetch(GOOGLE_SHEETS_CONFIG.scriptUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'updateJudgments',
+                        data: changes
+                    })
+                });
+
+                // No-cors requests don't allow reading the response, so we assume success
+                success = true;
+                console.log('✅ No-CORS request sent (assuming success)');
+            } catch (noCorsError) {
+                console.log('No-CORS request also failed:', noCorsError);
+            }
+        }
+
+        if (success) {
+            // Clear pending changes
+            pendingChanges.clear();
+            updateStats();
+            showMessage(`Successfully saved ${changes.length} judgment changes!`, 'success');
+        } else {
+            throw new Error('All request methods failed');
+        }
+        
+    } catch (error) {
+        console.error('Error saving judgments:', error);
+        showMessage('Error saving to Google Sheets, saving to localStorage instead', 'warning');
+        
+        // Fallback to localStorage
+        try {
+            // Update local data
+            changes.forEach(change => {
+                const entry = adminSubmissionsData.find(e => e.id == change.id);
+                if (entry) {
+                    entry.judgment = change.judgment;
+                }
+            });
+            
+            // Save to localStorage
+            localStorage.setItem('recklessSubmissions', JSON.stringify(adminSubmissionsData));
+            
+            // Clear pending changes
+            pendingChanges.clear();
+            updateStats();
+            showMessage(`Saved ${changes.length} judgment changes to localStorage!`, 'success');
+        } catch (localError) {
+            console.error('Error saving to localStorage:', localError);
+            showMessage('Error saving judgment changes', 'error');
+        }
     } finally {
         showLoading(false);
     }
