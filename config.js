@@ -4,7 +4,7 @@
 const RECKLESS_CONFIG = {
     // Google Sheets Configuration
     googleSheets: {
-        scriptUrl: 'https://script.google.com/macros/s/AKfycbw0JD-4hFgUSk4eZR9WRB1Bu1WbqmXFlrOcjOszN5l-JbBXx_ifVhmyO4sXfkXI3nfD/exec',
+        scriptUrl: 'https://script.google.com/macros/s/AKfycbwdTV3upIrJVX7skRCTFeb8yBDTpqXY6NKDRVxAyOZUTZT4LW6LOxFuhLgT55F_GetI/exec',
         sheetId: '1X9xQel2xBwdreSJYeFwSZ9dp3CZVEgkLKCa22deHKKk',
         sheetName: 'Reckless Submissions'
     },

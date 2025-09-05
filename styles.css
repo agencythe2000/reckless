@@ -1988,6 +1988,152 @@ body {
 }
 
 /* ===========================================
+   NAVIGATION SECTION STYLES
+   =========================================== */
+
+.navigation-section {
+    background: linear-gradient(145deg, #0a0a0a, #1a1a1a);
+    border-radius: 15px;
+    border: 3px solid #ff6b35;
+    box-shadow: 
+        0 0 30px rgba(255, 107, 53, 0.3),
+        inset 0 0 20px rgba(139, 0, 255, 0.1);
+    overflow: hidden;
+    margin: 30px;
+    position: relative;
+}
+
+.navigation-section::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255, 107, 53, 0.05), transparent);
+    animation: navigationShine 4s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes navigationShine {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.nav-buttons {
+    display: flex;
+    gap: 20px;
+    padding: 25px;
+    justify-content: center;
+    flex-wrap: wrap;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+}
+
+.nav-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 25px;
+    background: linear-gradient(145deg, #1a1a1a, #2d1b69);
+    border: 3px solid #ff6b35;
+    border-radius: 15px;
+    text-decoration: none;
+    color: #ffffff;
+    transition: all 0.3s ease;
+    box-shadow: 
+        0 0 20px rgba(255, 107, 53, 0.3),
+        inset 0 0 10px rgba(139, 0, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+    min-width: 180px;
+}
+
+.nav-button::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255, 107, 53, 0.05), transparent);
+    animation: navButtonShine 3s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes navButtonShine {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.nav-button:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 
+        0 0 30px rgba(255, 107, 53, 0.5),
+        inset 0 0 15px rgba(139, 0, 255, 0.2);
+    border-color: #8b00ff;
+}
+
+.nav-icon {
+    font-size: 32px;
+    margin-bottom: 10px;
+    text-shadow: 0 0 15px currentColor;
+    animation: navIconFloat 3s ease-in-out infinite;
+}
+
+@keyframes navIconFloat {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-3px); }
+}
+
+.nav-text {
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    font-size: 14px;
+    text-shadow: 0 0 10px #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
+    line-height: 1.2;
+}
+
+/* Specific button styles */
+.nav-button.main-portal {
+    border-color: #ff6b35;
+}
+
+.nav-button.main-portal:hover {
+    background: linear-gradient(145deg, #ff6b35, #ff0040);
+    border-color: #ff0040;
+}
+
+.nav-button.submissions {
+    border-color: #ff0040;
+}
+
+.nav-button.submissions:hover {
+    background: linear-gradient(145deg, #ff0040, #8b00ff);
+    border-color: #8b00ff;
+}
+
+.nav-button.review {
+    border-color: #8b00ff;
+}
+
+.nav-button.review:hover {
+    background: linear-gradient(145deg, #8b00ff, #ff6b35);
+    border-color: #ff6b35;
+}
+
+.nav-button.court {
+    border-color: #8b00ff;
+}
+
+.nav-button.court:hover {
+    background: linear-gradient(145deg, #8b00ff, #ff6b35);
+    border-color: #ff6b35;
+}
+
+/* ===========================================
    ADMIN PAGE STYLES
    =========================================== */
 

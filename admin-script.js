@@ -9,10 +9,14 @@ const GOOGLE_SHEETS_CONFIG = window.RECKLESS_CONFIG.googleSheets;
 async function loadSubmissionsFromGoogleSheets() {
     showLoading(true);
     try {
+        console.log('Loading from Google Sheets with URL:', GOOGLE_SHEETS_CONFIG.scriptUrl);
         const response = await fetch(`${GOOGLE_SHEETS_CONFIG.scriptUrl}?action=getSubmissions`, {
             method: 'GET',
             mode: 'cors'
         });
+        
+        console.log('Load response status:', response.status);
+        console.log('Load response ok:', response.ok);
         
         if (response.ok) {
             const data = await response.json();
@@ -22,6 +26,8 @@ async function loadSubmissionsFromGoogleSheets() {
             updateStats();
             renderAllAdminEntries();
             return true;
+        } else {
+            console.error('Failed to load from Google Sheets:', response.status, response.statusText);
         }
     } catch (error) {
         console.error('Error loading from Google Sheets:', error);
@@ -61,6 +67,9 @@ async function saveJudgmentChanges() {
             judgment: judgment
         }));
 
+        console.log('Sending changes to Google Sheets:', changes);
+        console.log('Using script URL:', GOOGLE_SHEETS_CONFIG.scriptUrl);
+
         const response = await fetch(GOOGLE_SHEETS_CONFIG.scriptUrl, {
             method: 'POST',
             mode: 'cors',
@@ -73,6 +82,9 @@ async function saveJudgmentChanges() {
             })
         });
 
+        console.log('Response status:', response.status);
+        console.log('Response ok:', response.ok);
+
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -80,10 +92,14 @@ async function saveJudgmentChanges() {
         const result = await response.json();
         console.log('Save result:', result);
 
-        // Clear pending changes
-        pendingChanges.clear();
-        updateStats();
-        showMessage(`Successfully saved ${changes.length} judgment changes!`, 'success');
+        if (result.success) {
+            // Clear pending changes
+            pendingChanges.clear();
+            updateStats();
+            showMessage(`Successfully saved ${changes.length} judgment changes!`, 'success');
+        } else {
+            throw new Error(result.error || 'Unknown error from server');
+        }
         
     } catch (error) {
         console.error('Error saving judgments:', error);
@@ -386,9 +402,44 @@ document.addEventListener('DOMContentLoaded', async function() {
     document.getElementById('mark-all-safe').addEventListener('click', markAllSafe);
     document.getElementById('mark-all-reckless').addEventListener('click', markAllReckless);
     document.getElementById('save-changes').addEventListener('click', saveJudgmentChanges);
+    document.getElementById('test-connection').addEventListener('click', testGoogleSheetsConnection);
+    
+    // Test Google Sheets connection
+    testGoogleSheetsConnection();
     
     console.log('Reckless Admin Portal initialized! 🔥');
 });
+
+// Test Google Sheets connection
+async function testGoogleSheetsConnection() {
+    showLoading(true);
+    try {
+        console.log('Testing Google Sheets connection...');
+        console.log('Using URL:', GOOGLE_SHEETS_CONFIG.scriptUrl);
+        
+        const response = await fetch(`${GOOGLE_SHEETS_CONFIG.scriptUrl}?action=getSubmissions`, {
+            method: 'GET',
+            mode: 'cors'
+        });
+        
+        console.log('Response status:', response.status);
+        console.log('Response ok:', response.ok);
+        
+        if (response.ok) {
+            const data = await response.json();
+            console.log('✅ Google Sheets connection successful!', data);
+            showMessage(`✅ Connection successful! Found ${data.submissions?.length || 0} submissions`, 'success');
+        } else {
+            console.error('❌ Google Sheets connection failed:', response.status, response.statusText);
+            showMessage(`❌ Connection failed: ${response.status} ${response.statusText}`, 'error');
+        }
+    } catch (error) {
+        console.error('❌ Google Sheets connection error:', error);
+        showMessage(`❌ Connection error: ${error.message}`, 'error');
+    } finally {
+        showLoading(false);
+    }
+}
 
 // Add CSS for message animations
 const style = document.createElement('style');
